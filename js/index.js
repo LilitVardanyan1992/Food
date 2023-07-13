@@ -56,7 +56,6 @@ window.addEventListener("DOMContentLoaded", function () {
         }
 
         return {
-            total,
             days,
             hours,
             minutes,
@@ -70,19 +69,19 @@ window.addEventListener("DOMContentLoaded", function () {
 
     function setClock(selector, endtime) {
         const timer = document.querySelector(selector);
-        const daysBlock = timer.querySelector("#days");
-        const hoursBlock = timer.querySelector("#hours");
-        const minutesBlock = timer.querySelector("#minutes");
-        const secondsBlock = timer.querySelector("#seconds");
-        const timerId = setInterval(updateClock, 1000);
+        const timerParts = timer.querySelectorAll("span");
 
+        updateClock();
+        
         function updateClock() {
-            const { total, days, hours, minutes, seconds } = getTimeRemaining(deadline);;
+            const calculation = getTimeRemaining(deadline);
+            const calculationValues = Object.values(calculation);
 
-            daysBlock.textContent = setZero(days);
-            hoursBlock.textContent = setZero(hours);
-            minutesBlock.textContent = setZero(minutes);
-            secondsBlock.textContent = setZero(seconds);
+            const timerId = setInterval(updateClock, 1000);
+
+            timerParts.forEach((part, index) => {
+                part.textContent = setZero(calculationValues[index])
+            })
 
             if (total <= 0) {
                 clearInterval(timerId);
@@ -93,7 +92,51 @@ window.addEventListener("DOMContentLoaded", function () {
     setClock(".timer", deadline);
 
     //timer logic end
+
+    //modal logic start
+
+    const modalTrigger = document.querySelectorAll("[data-modal]");
+    const modal = document.querySelector(".modal");
+    const modalCloseBtn = document.querySelector("[data-close]");
+
+    modalTrigger.forEach(btn => btn.addEventListener("click", openModal));
+
+    document.addEventListener("click", (e) => {
+        if(e.target !== ".modal" && e.target.matches(".show") || e.target === modalCloseBtn) {
+           closeModal();
+        }
+    })
+
+    document.addEventListener("keydown", (e) => {
+        if (e.code === "Escape") {
+           closeModal();
+        }
+    })
+  
+    const modalTimerId = setTimeout(openModal, 5000);
+
+    function showModalByScroll() {
+        if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+            openModal();
+            window.removeEventListener("scroll", showModalByScroll);
+        }
+    }
+
+    window.addEventListener("scroll", showModalByScroll);
+
+	function openModal() {
+		modal.classList.add("show");
+		modal.classList.remove("hide");
+		document.body.style.overflow = "hidden";
+		clearTimeout(modalTimerId);
+	}
+
+	function closeModal() {
+		modal.classList.add("hide");
+		modal.classList.remove("show");
+		document.body.removeAttribute("style");
+	}
+
+    //modal logic end
 })
 
-const start = Date.now()
-console.log(start)
