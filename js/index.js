@@ -94,49 +94,50 @@ window.addEventListener("DOMContentLoaded", function () {
     // timer logic end
 
     // modal logic start
-
     const modalTrigger = document.querySelectorAll("[data-modal]");
-    const modal = document.querySelector(".modal");
-    const modalCloseBtn = document.querySelector("[data-close]");
+	const modal = document.querySelector(".modal");
 
-    modalTrigger.forEach(btn => btn.addEventListener("click", openModal));
+	modalTrigger.forEach(btn => btn.addEventListener("click", openModal));
 
-    document.addEventListener("click", (e) => {
-        if (e.target !== ".modal" && e.target.matches(".show") || e.target === modalCloseBtn) {
-            closeModal();
-        }
-    })
+	function closeModal() {
+		modal.classList.add("hide");
+		modal.classList.remove("show");
+		document.body.removeAttribute("style");
+	}
 
-    document.addEventListener("keydown", (e) => {
-        if (e.code === "Escape") {
-            closeModal();
-        }
-    })
+	function openModal() {
+		modal.classList.add("show");
+		modal.classList.remove("hide");
+		document.body.style.overflow = "hidden";
+		// clearTimeout(modalTimerId);
+	}
 
-    // const modalTimerId = setTimeout(openModal, 5000);
+	modal.addEventListener("click", (e) => {
+		if (e.target === modal || e.target.getAttribute("data-close") == "") {
+			closeModal();
+		}
+	});
 
-    function showModalByScroll() {
-        if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
-            openModal();
-            window.removeEventListener("scroll", showModalByScroll);
-        }
-    }
+	document.addEventListener("keydown", (e) => {
+		if (e.code === "Escape" && modal.matches(".show")) {
+			closeModal();
+		}
+	});
 
-    window.addEventListener("scroll", showModalByScroll);
+	// const modalTimerId = this.setTimeout(openModal, 500000);
 
-    function openModal() {
-        modal.classList.add("show");
-        modal.classList.remove("hide");
-        document.body.style.overflow = "hidden";
-        clearTimeout(modalTimerId);
-    }
+	function showModalByScroll() {
+		// if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1) {
+		// 	openModal();
+		// 	window.removeEventListener("scroll", showModalByScroll);
+		// }
+		if (window.scrollY >= 1000) {
+			openModal();
+			window.removeEventListener("scroll", showModalByScroll);
+		}
+	}
 
-    function closeModal() {
-        modal.classList.add("hide");
-        modal.classList.remove("show");
-        document.body.removeAttribute("style");
-    }
-
+	window.addEventListener("scroll", showModalByScroll);
     // modal logic end
 
     // used Class for menu items start
@@ -201,6 +202,136 @@ window.addEventListener("DOMContentLoaded", function () {
 		13,
 		".menu .container"
 	).render();
-    // used Class for menu items end
-})
 
+    // used Class for menu items end
+
+    const forms = document.querySelectorAll("form");
+
+    const messages = {
+        loading: "Loading...",
+        success: "Thank you ! We will contact you !",
+        failure: "Sorry, but something went wrong !"
+    }
+
+    forms.forEach(form => postData(form));
+
+    function spinner() {
+		return `
+			<?xml version="1.0" encoding="utf-8"?>
+			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="38px" height="38px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+			<g transform="rotate(0 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.9166666666666666s" repeatCount="indefinite"></animate>
+				</rect>
+			</g><g transform="rotate(30 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.8333333333333334s" repeatCount="indefinite"></animate>
+				</rect>
+			</g><g transform="rotate(60 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.75s" repeatCount="indefinite"></animate>
+				</rect>
+			</g><g transform="rotate(90 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.6666666666666666s" repeatCount="indefinite"></animate>
+				</rect>
+			</g><g transform="rotate(120 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.5833333333333334s" repeatCount="indefinite"></animate>
+				</rect>
+			</g><g transform="rotate(150 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.5s" repeatCount="indefinite"></animate>
+				</rect>
+			</g><g transform="rotate(180 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.4166666666666667s" repeatCount="indefinite"></animate>
+				</rect>
+			</g><g transform="rotate(210 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.3333333333333333s" repeatCount="indefinite"></animate>
+				</rect>
+			</g><g transform="rotate(240 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.25s" repeatCount="indefinite"></animate>
+				</rect>
+			</g><g transform="rotate(270 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.16666666666666666s" repeatCount="indefinite"></animate>
+				</rect>
+			</g><g transform="rotate(300 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.08333333333333333s" repeatCount="indefinite"></animate>
+				</rect>
+			</g><g transform="rotate(330 50 50)">
+				<rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#337ab7">
+					<animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animate>
+				</rect>
+			</g>
+			<!-- [ldio] generated by https://loading.io/ --></svg>
+		`;
+	}
+
+    function postData(form) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            const { loading, success, failure } = messages;
+
+            let statusMessage = document.createElement("div");
+			statusMessage.innerHTML = spinner();
+			form.append(statusMessage);
+        
+            const request = new XMLHttpRequest();
+            request.open("POST", "server.php");
+
+            //// request.setRequestHeader("Content-type", "multipart/form-data");
+            request.setRequestHeader("Content-type", "aplication/json");
+
+            const formData = new FormData(form);
+
+            const obj = {};
+            formData.forEach((val, key) => {
+                obj[key] = val;
+            })
+
+            request.send(JSON.stringify(obj));
+            // showThanksModal(loading);
+            form.reset();
+
+            request.addEventListener("load", () => {
+                if (request.status === 200) {
+                    console.log(request.response);
+                    showThanksModal(success);
+                } else {
+                    showThanksModal(failure + " " + request.statusText + " " + request.status);
+                }
+            });
+        });
+    }
+
+    function showThanksModal(message) {
+        const prevModalDialog = document.querySelector(".modal__dialog");
+
+		prevModalDialog.classList.add("hide");
+		openModal();
+
+		const thanksModal = document.createElement("div");
+		thanksModal.classList.add("modal__dialog");
+		thanksModal.innerHTML = `
+			<div class="modal__content">
+				<div class="modal__close" data-close> &times;</div>
+				<div class="modal__title"> ${message} </div>
+			</div>
+		`;
+
+		document.querySelector(".modal").append(thanksModal);
+
+		setTimeout(() => {
+			thanksModal.remove();
+			prevModalDialog.classList.add("show");
+			prevModalDialog.classList.remove("hide");
+			closeModal();
+		}, 2000);
+    }
+});
