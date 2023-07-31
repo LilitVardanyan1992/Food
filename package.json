@@ -1,0 +1,14 @@
+{
+  "name": "food2",
+  "version": "1.0.9",
+  "description": "food, product",
+  "main": "index.js",
+  "scripts": {
+    "serve": "json-server --watch db.json --port 8888"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "json-server": "^0.17.3"
+  }
+}
