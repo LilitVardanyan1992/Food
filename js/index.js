@@ -278,25 +278,40 @@ window.addEventListener("DOMContentLoaded", function () {
             
             const { loading, success, failure } = messages;
 
-            let statusMessage = document.createElement("div");
-			statusMessage.innerHTML = spinner();
-			form.append(statusMessage);
+            const loader = document.createElement("div");
+			loader.innerHTML = spinner();
+			form.append(loader);
+
+            if (!navigator.onLine) {
+				showThanksModal(failure + ":" + "Please check your internet connection !");
+				loader.remove();
+				form.reset();
+			}
         
-            const request = new XMLHttpRequest();
-            request.open("POST", "server.php");
-
-            //// request.setRequestHeader("Content-type", "multipart/form-data");
-            request.setRequestHeader("Content-type", "aplication/json");
-
             const formData = new FormData(form);
 
             const obj = {};
-            formData.forEach((val, key) => {
-                obj[key] = val;
-            })
 
-            request.send(JSON.stringify(obj));
-            // showThanksModal(loading);
+            formData.forEach((val, key) => obj[key] = val);
+//բայց body-ի մեջ միանգամց կարող ենք գրել formData-ն ու headers էլ չենք գրի
+            fetch("server.php", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json; charset=utf-8"
+                }, 
+                body: JSON.stringify(obj)
+            }).then(data => {
+                console.log(data);
+                messagesModal(success);
+            })
+            .catch(err => {
+                messagesModal(failure + ": " + err);
+            })
+            .finally(() => {
+                loader.remove();
+                form.reset();
+            });
+
             form.reset();
 
             request.addEventListener("load", () => {
@@ -310,7 +325,7 @@ window.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function showThanksModal(message) {
+    function messagesModal(message) {
         const prevModalDialog = document.querySelector(".modal__dialog");
 
 		prevModalDialog.classList.add("hide");
