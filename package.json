@@ -4,7 +4,7 @@
   "description": "food, product",
   "main": "index.js",
   "scripts": {
-    "serve": "json-server --watch db.json --port 8888"
+    "serve": "json-server --watch db.json  --port 8888"
   },
   "author": "",
   "license": "ISC",
