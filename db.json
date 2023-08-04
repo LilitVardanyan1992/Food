@@ -29,24 +29,9 @@
       "id": 1
     },
     {
-      "name": "Lilit",
-      "phone": "1111",
-      "id": 2
-    },
-    {
-      "name": "Lilit",
-      "phone": "22222",
-      "id": 3
-    },
-    {
-      "name": "Lilit",
-      "phone": "444",
-      "id": 4
-    },
-    {
       "name": "John Smith",
       "phone": "1111",
-      "id": 5
+      "id": 2
     }
   ]
 }
