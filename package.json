@@ -4,11 +4,16 @@
   "description": "food, product",
   "main": "index.js",
   "scripts": {
-    "serve": "json-server --watch db.json  --port 8888"
+    "serve": "json-server --watch ./src/db.json  --port 8888",
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "json-server": "^0.17.3"
+  },
+  "dependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   }
 }
